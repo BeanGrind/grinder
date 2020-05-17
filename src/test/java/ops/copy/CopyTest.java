@@ -12,17 +12,17 @@ import static org.junit.Assert.assertNotSame;
 public class CopyTest {
 
     @Test
-    public void testCopy_assertMerged() {
+    public void testCopy_assertCopy() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
-        caller.setFieldOne("fieldTwo");
+        caller.setFieldTwo("fieldTwo");
 
         assertEquals(caller, caller.copy());
         assertNotSame(caller, caller.copy());
     }
 
     @Test
-    public void testMerge_assertMergedPriority_ignored() {
+    public void testMerge_assertCopy_ignored() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setIgnoredField("ignored");
