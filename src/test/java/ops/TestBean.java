@@ -1,14 +1,17 @@
-package ops.merge;
+package ops;
 
+import grinder.annotation.Copy;
 import grinder.annotation.Merge;
+import grinder.ops.copy.Copyable;
 import grinder.ops.merge.Mergeable;
 
 import java.util.Objects;
 
-public class MergeBean implements Mergeable {
+public class TestBean implements Mergeable, Copyable {
     private String fieldOne;
     private String fieldTwo;
 
+    @Copy.Ignore
     @Merge.Ignore
     private String ignoredField;
 
@@ -40,7 +43,7 @@ public class MergeBean implements Mergeable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MergeBean mergeBean = (MergeBean) o;
+        TestBean mergeBean = (TestBean) o;
         return Objects.equals(fieldOne, mergeBean.fieldOne) &&
                 Objects.equals(fieldTwo, mergeBean.fieldTwo) &&
                 Objects.equals(ignoredField, mergeBean.ignoredField);

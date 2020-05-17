@@ -1,5 +1,6 @@
 package ops.merge;
 
+import ops.TestBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -11,13 +12,13 @@ public class MergeTest {
 
     @Test
     public void testMerge_assertMerged() {
-        MergeBean caller = new MergeBean();
+        TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
 
-        MergeBean priority = new MergeBean();
+        TestBean priority = new TestBean();
         priority.setFieldTwo("fieldTwo");
 
-        MergeBean result = new MergeBean();
+        TestBean result = new TestBean();
         result.setFieldOne("fieldOne");
         result.setFieldTwo("fieldTwo");
 
@@ -26,14 +27,14 @@ public class MergeTest {
 
     @Test
     public void testMerge_assertMergedPriority() {
-        MergeBean caller = new MergeBean();
+        TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("two");
 
-        MergeBean priority = new MergeBean();
+        TestBean priority = new TestBean();
         priority.setFieldTwo("fieldTwo");
 
-        MergeBean result = new MergeBean();
+        TestBean result = new TestBean();
         result.setFieldOne("fieldOne");
         result.setFieldTwo("fieldTwo");
 
@@ -42,15 +43,15 @@ public class MergeTest {
 
     @Test
     public void testMerge_assertMergedPriority_ignored() {
-        MergeBean caller = new MergeBean();
+        TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setIgnoredField("ignored");
 
-        MergeBean priority = new MergeBean();
+        TestBean priority = new TestBean();
         priority.setFieldTwo("fieldTwo");
         priority.setIgnoredField("ignoredTwo");
 
-        MergeBean result = new MergeBean();
+        TestBean result = new TestBean();
         result.setFieldOne("fieldOne");
         result.setFieldTwo("fieldTwo");
         result.setIgnoredField("ignored");
