@@ -23,12 +23,26 @@ public class ValidationTest {
     }
 
     @Test
-    public void testValidation_Invalid() {
+    public void testValidation_allowedNull_Valid() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPositiveNumber(100L);
+
+        caller.setPatternField(null);
+
+        assertTrue(caller.validate());
+    }
+
+    @Test
+    public void testValidation_missingField_Invalid() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setPatternField("12-345");
         caller.setIgnoredField("ignored");
         caller.setPositiveNumber(100L);
+
+        caller.setFieldTwo(null);
 
         assertFalse(caller.validate());
     }
