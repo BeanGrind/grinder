@@ -12,19 +12,31 @@ import static org.junit.Assert.assertTrue;
 public class ValidationTest {
 
     @Test
-    public void testCopy_assertCopy() {
+    public void testValidation_Valid() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
+        caller.setPatternField("12-345");
 
         assertTrue(caller.validate());
     }
 
     @Test
-    public void testMerge_assertCopy_ignored() {
+    public void testValidation_Invalid() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
+        caller.setPatternField("12-345");
         caller.setIgnoredField("ignored");
+
+        assertFalse(caller.validate());
+    }
+
+    @Test
+    public void testValidation_pattern__Invalid() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPatternField("badPattern");
 
         assertFalse(caller.validate());
     }

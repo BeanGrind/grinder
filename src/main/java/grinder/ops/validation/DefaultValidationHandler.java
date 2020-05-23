@@ -2,10 +2,10 @@ package grinder.ops.validation;
 
 import grinder.annotation.Validate;
 import grinder.util.Fields;
+import grinder.util.Strings;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Optional;
 
 public class DefaultValidationHandler implements Validatable {
 
@@ -23,9 +23,26 @@ public class DefaultValidationHandler implements Validatable {
         field.setAccessible(true);
 
         try {
-            return Fields.getValue(field, object).isPresent();
+            Object value = Fields.getValue(field, object).orElse(null);
+
+            if (value == null) {
+                return false;
+            }
+
+            Validate validate = Fields.getAnnotation(field, Validate.class).orElse(null);
+            boolean matchPattern = false;
+
+            if (validate != null) {
+                matchPattern = validatePattern(validate.pattern(), value.toString());
+            }
+
+            return validate == null || matchPattern;
         } catch (Exception ex) {
             throw new RuntimeException("Error getting " + field.getName() + " on " + object.getClass().getName());
         }
+    }
+
+    private boolean validatePattern(String pattern, String value) {
+        return Strings.isNullOrEmpty(pattern) || value.matches(pattern);
     }
 }
