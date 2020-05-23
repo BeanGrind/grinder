@@ -13,4 +13,12 @@ public class Fields {
     public static <T extends Annotation> Optional<T> getAnnotation(Field field, Class<T> annotationClass) {
         return Optional.ofNullable(field.getDeclaredAnnotation(annotationClass));
     }
+
+    public static Optional<Object> getValue(Field field, Object input) {
+        try {
+            return Optional.ofNullable(field.get(input));
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
+    }
 }

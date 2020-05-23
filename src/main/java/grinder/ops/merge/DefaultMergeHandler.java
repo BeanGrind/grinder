@@ -14,7 +14,7 @@ class DefaultMergeHandler {
     }
 
     @SuppressWarnings("unchecked")
-    <BEAN extends Mergeable> BEAN merge(Object caller, BEAN priority) {
+    <BEAN extends Mergeable> BEAN merge(Object caller, Object priority) {
         Arrays.stream(priority.getClass().getDeclaredFields())
                 .filter(field -> !Fields.hasAnnotation(field, Merge.Ignore.class))
                 .forEach(field -> mergeField(field, caller, priority));
