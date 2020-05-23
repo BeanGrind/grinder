@@ -3,19 +3,22 @@ package ops;
 import grinder.annotation.Copy;
 import grinder.annotation.Mapping;
 import grinder.annotation.Merge;
+import grinder.annotation.Validate;
 import grinder.ops.copy.Copyable;
 import grinder.ops.map.Mappable;
 import grinder.ops.merge.Mergeable;
+import grinder.ops.validation.Validatable;
 
 import java.util.Objects;
 
-public class TestBean implements Mergeable, Copyable, Mappable {
+public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
     private String fieldOne;
     private String fieldTwo;
 
     @Copy.Ignore
     @Merge.Ignore
     @Mapping.Ignore
+    @Validate.Ignore
     private String ignoredField;
 
     public String getFieldOne() {
