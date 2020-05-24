@@ -4,10 +4,12 @@ import grinder.annotation.Copy;
 import grinder.annotation.Mapping;
 import grinder.annotation.Merge;
 import grinder.annotation.Validate;
+import grinder.custom.converter.ConverterDirection;
 import grinder.ops.copy.Copyable;
 import grinder.ops.map.Mappable;
 import grinder.ops.merge.Mergeable;
 import grinder.ops.validation.Validatable;
+import ops.map.AbsoluteValueConverter;
 import ops.validation.PositiveNumberValidator;
 
 import java.util.Objects;
@@ -19,8 +21,12 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
     @Validate(pattern = "[0-9]{2}-[0-9]{3}", allowNull = true)
     private String patternField;
 
+    @Mapping(converter = AbsoluteValueConverter.class)
     @Validate(validator = PositiveNumberValidator.class)
     private Long positiveNumber;
+
+    @Mapping(converter = AbsoluteValueConverter.class, convertDirection = ConverterDirection.TO_MAP)
+    private Long negativeNumber;
 
     @Copy.Ignore
     @Merge.Ignore
@@ -60,6 +66,14 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
         this.positiveNumber = positiveNumber;
     }
 
+    public Long getNegativeNumber() {
+        return negativeNumber;
+    }
+
+    public void setNegativeNumber(Long negativeNumber) {
+        this.negativeNumber = negativeNumber;
+    }
+
     public String getIgnoredField() {
         return ignoredField;
     }
@@ -77,11 +91,12 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
                 Objects.equals(fieldTwo, testBean.fieldTwo) &&
                 Objects.equals(patternField, testBean.patternField) &&
                 Objects.equals(positiveNumber, testBean.positiveNumber) &&
+                Objects.equals(negativeNumber, testBean.negativeNumber) &&
                 Objects.equals(ignoredField, testBean.ignoredField);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fieldOne, fieldTwo, patternField, positiveNumber, ignoredField);
+        return Objects.hash(fieldOne, fieldTwo, patternField, positiveNumber, negativeNumber, ignoredField);
     }
 }

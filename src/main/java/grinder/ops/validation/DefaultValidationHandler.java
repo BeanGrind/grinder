@@ -14,7 +14,7 @@ public class DefaultValidationHandler implements Validatable, Validator<Object> 
         return new DefaultValidationHandler();
     }
 
-    public boolean validate(Object toValidate) {
+    boolean validate(Object toValidate) {
         return Arrays.stream(toValidate.getClass().getDeclaredFields())
                 .filter(field -> !Fields.hasAnnotation(field, Validate.Ignore.class))
                 .allMatch(field -> isValid(field, toValidate));
