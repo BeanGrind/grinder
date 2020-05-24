@@ -28,6 +28,14 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
     @Mapping(converter = AbsoluteValueConverter.class, convertDirection = ConverterDirection.TO_MAP)
     private Long negativeNumber;
 
+    @Copy
+    @Validate.Ignore
+    private AltTestBean deepCopyBean;
+
+    @Validate.Ignore
+    @Copy(deepCopy = false)
+    private AltTestBean basicCopyBean;
+
     @Copy.Ignore
     @Merge.Ignore
     @Mapping.Ignore
@@ -74,6 +82,22 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
         this.negativeNumber = negativeNumber;
     }
 
+    public AltTestBean getDeepCopyBean() {
+        return deepCopyBean;
+    }
+
+    public void setDeepCopyBean(AltTestBean deepCopyBean) {
+        this.deepCopyBean = deepCopyBean;
+    }
+
+    public AltTestBean getBasicCopyBean() {
+        return basicCopyBean;
+    }
+
+    public void setBasicCopyBean(AltTestBean basicCopyBean) {
+        this.basicCopyBean = basicCopyBean;
+    }
+
     public String getIgnoredField() {
         return ignoredField;
     }
@@ -92,11 +116,13 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
                 Objects.equals(patternField, testBean.patternField) &&
                 Objects.equals(positiveNumber, testBean.positiveNumber) &&
                 Objects.equals(negativeNumber, testBean.negativeNumber) &&
+                Objects.equals(deepCopyBean, testBean.deepCopyBean) &&
+                Objects.equals(basicCopyBean, testBean.basicCopyBean) &&
                 Objects.equals(ignoredField, testBean.ignoredField);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fieldOne, fieldTwo, patternField, positiveNumber, negativeNumber, ignoredField);
+        return Objects.hash(fieldOne, fieldTwo, patternField, positiveNumber, negativeNumber, deepCopyBean, basicCopyBean, ignoredField);
     }
 }

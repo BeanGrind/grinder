@@ -1,6 +1,6 @@
 package ops.validation;
 
-import grinder.ops.Validator;
+import grinder.custom.validator.Validator;
 
 public class PositiveNumberValidator implements Validator<Long> {
 

@@ -1,6 +1,6 @@
 package grinder.annotation;
 
-import grinder.ops.Validator;
+import grinder.custom.validator.Validator;
 import grinder.ops.validation.DefaultValidationHandler;
 
 import java.lang.annotation.ElementType;

@@ -1,7 +1,7 @@
 package grinder.ops.validation;
 
 import grinder.annotation.Validate;
-import grinder.ops.Validator;
+import grinder.custom.validator.Validator;
 import grinder.util.Fields;
 import grinder.util.Strings;
 

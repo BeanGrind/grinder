@@ -5,6 +5,7 @@ import grinder.util.Fields;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Optional;
 
 class DefaultCopyHandler {
 
@@ -28,10 +29,21 @@ class DefaultCopyHandler {
     }
 
     private void copyField(Field field, Object copy, Object paste) {
+        Optional<Copy> copyAnnotation = Fields.getAnnotation(field, Copy.class);
         field.setAccessible(true);
 
         try {
-            field.set(paste, field.get(copy));
+            if (copyAnnotation.isPresent()) {
+                Object value = field.get(copy);
+
+                if (value instanceof Copyable && copyAnnotation.map(Copy::deepCopy).orElse(false)) {
+                    field.set(paste, copy(value));
+                } else {
+                    field.set(paste, field.get(copy));
+                }
+            } else {
+                field.set(paste, field.get(copy));
+            }
         } catch (Exception ex) {
             throw new RuntimeException("Error setting " + field.getName() + " on " + paste.getClass().getName());
         }
