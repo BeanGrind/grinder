@@ -26,11 +26,12 @@ public class DefaultValidationHandler implements Validatable, Validator<Object> 
         try {
             Object value = Fields.getValue(field, object).orElse(null);
 
+            Validate validate = Fields.getAnnotation(field, Validate.class).orElse(null);
+
             if (value == null) {
-                return false;
+                return validate != null && validate.allowNull();
             }
 
-            Validate validate = Fields.getAnnotation(field, Validate.class).orElse(null);
             boolean matchPattern = false;
             boolean customValidation = false;
 

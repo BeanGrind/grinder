@@ -16,7 +16,7 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
     private String fieldOne;
     private String fieldTwo;
 
-    @Validate(pattern = "[0-9]{2}-[0-9]{3}")
+    @Validate(pattern = "[0-9]{2}-[0-9]{3}", allowNull = true)
     private String patternField;
 
     @Validate(validator = PositiveNumberValidator.class)
