@@ -8,6 +8,7 @@ import grinder.util.Fields;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DefaultMapHandler implements Converter<Object, Object> {
@@ -27,14 +28,16 @@ public class DefaultMapHandler implements Converter<Object, Object> {
     @SuppressWarnings("unchecked")
     private Object getFieldValue(Field field, Object input) {
         try {
-            Mapping mapping = Fields.getAnnotation(field, Mapping.class).orElse(null);
+            Optional<Mapping> mapping = Fields.getAnnotation(field, Mapping.class);
+            Object value = Fields.getValue(field, input).orElse(Void.TYPE);
 
-            if (mapping != null && ConverterDirection.shouldConvertToMap(mapping.convertDirection())) {
-                return mapping.converter().getDeclaredConstructor().newInstance().convert(
-                        Fields.getValue(field, input).orElse(Void.TYPE));
-            } else {
-                return Fields.getValue(field, input).orElse(Void.TYPE);
+            if (value instanceof Mappable && mapping.map(Mapping::deepMap).orElse(false)) {
+                return toMap(value);
+            } else if (ConverterDirection.shouldConvertToMap(mapping.map(Mapping::convertDirection).orElse(null))) {
+                return mapping.get().converter().getDeclaredConstructor().newInstance().convert(value);
             }
+
+            return value;
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }
@@ -60,16 +63,22 @@ public class DefaultMapHandler implements Converter<Object, Object> {
         try {
             field.setAccessible(true);
 
-            Mapping mapping = Fields.getAnnotation(field, Mapping.class).orElse(null);
+            Optional<Mapping> mapping = Fields.getAnnotation(field, Mapping.class);
 
-            if (mapping != null && ConverterDirection.shouldConvertFromMap(mapping.convertDirection())) {
-                field.set(object, mapping.converter().getDeclaredConstructor().newInstance().convert(value));
+            if (value instanceof Map && mapping.map(Mapping::deepMap).orElse(false)) {
+                field.set(object, fromMap((Map) value, field.getType()));
+            } else if (ConverterDirection.shouldConvertFromMap(mapping.map(Mapping::convertDirection).orElse(null))) {
+                field.set(object, mapping.get().converter().getDeclaredConstructor().newInstance().convert(value));
             } else {
                 field.set(object, value);
             }
 
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage());
+            if (ex instanceof IllegalArgumentException) {
+                return;
+            } else {
+                throw new RuntimeException(ex.getMessage());
+            }
         }
     }
 

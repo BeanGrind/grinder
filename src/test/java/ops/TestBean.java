@@ -30,11 +30,13 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
 
     @Copy
     @Merge
+    @Mapping
     @Validate
     private AltTestBean deepCopyBean;
 
     @Copy(deepCopy = false)
     @Merge(deepMerge = false)
+    @Mapping(deepMap = false)
     @Validate(deepValidate = false)
     private AltTestBean basicCopyBean;
 
