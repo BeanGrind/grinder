@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Merge {
+    boolean deepMerge() default true;
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)

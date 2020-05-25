@@ -16,6 +16,7 @@ public class ValidationTest {
     public void testValidation_Valid() {
         AltTestBean deepCopy = new AltTestBean();
         deepCopy.setFirstValue("firstValue");
+        deepCopy.setSecondValue("secondValue");
 
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
@@ -33,6 +34,7 @@ public class ValidationTest {
     public void testValidation_allowedNull_Valid() {
         AltTestBean deepCopy = new AltTestBean();
         deepCopy.setFirstValue("firstValue");
+        deepCopy.setSecondValue("secondValue");
 
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
