@@ -17,6 +17,7 @@ public class ValidationTest {
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
         caller.setPatternField("12-345");
+        caller.setPositiveNumber(100L);
 
         assertTrue(caller.validate());
     }
@@ -27,6 +28,7 @@ public class ValidationTest {
         caller.setFieldOne("fieldOne");
         caller.setPatternField("12-345");
         caller.setIgnoredField("ignored");
+        caller.setPositiveNumber(100L);
 
         assertFalse(caller.validate());
     }
@@ -36,7 +38,21 @@ public class ValidationTest {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
+        caller.setPositiveNumber(100L);
+
         caller.setPatternField("badPattern");
+
+        assertFalse(caller.validate());
+    }
+
+    @Test
+    public void testValidation_positiveNumber_Invalid() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPatternField("12-345");
+
+        caller.setPositiveNumber(-100L);
 
         assertFalse(caller.validate());
     }

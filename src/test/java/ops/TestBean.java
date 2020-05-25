@@ -8,6 +8,7 @@ import grinder.ops.copy.Copyable;
 import grinder.ops.map.Mappable;
 import grinder.ops.merge.Mergeable;
 import grinder.ops.validation.Validatable;
+import ops.validation.PositiveNumberValidator;
 
 import java.util.Objects;
 
@@ -17,6 +18,9 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
 
     @Validate(pattern = "[0-9]{2}-[0-9]{3}")
     private String patternField;
+
+    @Validate(validator = PositiveNumberValidator.class)
+    private Long positiveNumber;
 
     @Copy.Ignore
     @Merge.Ignore
@@ -48,6 +52,14 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
         this.patternField = patternField;
     }
 
+    public Long getPositiveNumber() {
+        return positiveNumber;
+    }
+
+    public void setPositiveNumber(Long positiveNumber) {
+        this.positiveNumber = positiveNumber;
+    }
+
     public String getIgnoredField() {
         return ignoredField;
     }
@@ -64,11 +76,12 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
         return Objects.equals(fieldOne, testBean.fieldOne) &&
                 Objects.equals(fieldTwo, testBean.fieldTwo) &&
                 Objects.equals(patternField, testBean.patternField) &&
+                Objects.equals(positiveNumber, testBean.positiveNumber) &&
                 Objects.equals(ignoredField, testBean.ignoredField);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fieldOne, fieldTwo, patternField, ignoredField);
+        return Objects.hash(fieldOne, fieldTwo, patternField, positiveNumber, ignoredField);
     }
 }
