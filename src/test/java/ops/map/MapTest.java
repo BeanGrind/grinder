@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNull;
 public class MapTest {
 
     @Test
-    public void testCopy_assertMapped() {
+    public void testMap_assertMapped() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
@@ -30,7 +30,25 @@ public class MapTest {
     }
 
     @Test
-    public void testMerge_assertFromMap() {
+    public void testMap_converter_assertMapped() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPositiveNumber(-1L);
+        caller.setNegativeNumber(-1L);
+        caller.setIgnoredField("ignore");
+
+        Map<String, Object> mapped = caller.toMap();
+
+        assertEquals("fieldOne", mapped.get("fieldOne"));
+        assertEquals("fieldTwo", mapped.get("fieldTwo"));
+        assertEquals(1L, mapped.get("positiveNumber"));
+        assertEquals(1L, mapped.get("negativeNumber"));
+        assertNull(mapped.get("ignoredField"));
+    }
+
+    @Test
+    public void testMap_assertFromMap() {
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
@@ -39,6 +57,24 @@ public class MapTest {
         map.put("fieldOne", "fieldOne");
         map.put("fieldTwo", "fieldTwo");
         map.put("ignoredField", "ignoredField");
+
+        assertEquals(Mappable.fromMap(map, TestBean.class), caller);
+    }
+
+    @Test
+    public void testMap_assertFromMap_converted() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPositiveNumber(1L);
+        caller.setNegativeNumber(-1L);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("fieldOne", "fieldOne");
+        map.put("fieldTwo", "fieldTwo");
+        map.put("ignoredField", "ignoredField");
+        map.put("positiveNumber", -1L);
+        map.put("negativeNumber", -1L);
 
         assertEquals(Mappable.fromMap(map, TestBean.class), caller);
     }
