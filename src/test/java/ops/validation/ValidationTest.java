@@ -1,5 +1,6 @@
 package ops.validation;
 
+import ops.AltTestBean;
 import ops.TestBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,23 +14,33 @@ public class ValidationTest {
 
     @Test
     public void testValidation_Valid() {
+        AltTestBean deepCopy = new AltTestBean();
+        deepCopy.setFirstValue("firstValue");
+
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
         caller.setPatternField("12-345");
         caller.setPositiveNumber(100L);
         caller.setNegativeNumber(-100L);
+        caller.setDeepCopyBean(deepCopy);
+        caller.setBasicCopyBean(new AltTestBean());
 
         assertTrue(caller.validate());
     }
 
     @Test
     public void testValidation_allowedNull_Valid() {
+        AltTestBean deepCopy = new AltTestBean();
+        deepCopy.setFirstValue("firstValue");
+
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
         caller.setPositiveNumber(100L);
         caller.setNegativeNumber(-100L);
+        caller.setDeepCopyBean(deepCopy);
+        caller.setBasicCopyBean(new AltTestBean());
 
         caller.setPatternField(null);
 
@@ -72,4 +83,19 @@ public class ValidationTest {
 
         assertFalse(caller.validate());
     }
+
+    @Test
+    public void testValidation_inValidChild() {
+        TestBean caller = new TestBean();
+        caller.setFieldOne("fieldOne");
+        caller.setFieldTwo("fieldTwo");
+        caller.setPatternField("12-345");
+        caller.setPositiveNumber(100L);
+        caller.setNegativeNumber(-100L);
+        caller.setDeepCopyBean(new AltTestBean());
+        caller.setBasicCopyBean(new AltTestBean());
+
+        assertFalse(caller.validate());
+    }
+
 }

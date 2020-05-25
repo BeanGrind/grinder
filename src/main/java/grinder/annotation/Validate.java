@@ -11,6 +11,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Validate {
+    boolean deepValidate() default true;
+
     boolean allowNull() default false;
 
     String pattern() default "";

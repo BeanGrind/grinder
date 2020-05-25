@@ -29,11 +29,11 @@ public class TestBean implements Mergeable, Copyable, Mappable, Validatable {
     private Long negativeNumber;
 
     @Copy
-    @Validate.Ignore
+    @Validate
     private AltTestBean deepCopyBean;
 
-    @Validate.Ignore
     @Copy(deepCopy = false)
+    @Validate(deepValidate = false)
     private AltTestBean basicCopyBean;
 
     @Copy.Ignore

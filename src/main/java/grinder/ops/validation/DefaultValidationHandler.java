@@ -34,13 +34,15 @@ public class DefaultValidationHandler implements Validatable, Validator<Object> 
 
             boolean matchPattern = false;
             boolean customValidation = false;
+            boolean deepValidate = false;
 
             if (validate != null) {
                 matchPattern = validatePattern(validate.pattern(), value.toString());
                 customValidation = callCustomValidator(validate.validator(), value);
+                deepValidate = deepValidate(validate.deepValidate(), value);
             }
 
-            return validate == null || (matchPattern && customValidation);
+            return validate == null || (matchPattern && customValidation && deepValidate);
         } catch (Exception ex) {
             throw new RuntimeException("Error getting " + field.getName() + " on " + object.getClass().getName());
         }
@@ -57,6 +59,14 @@ public class DefaultValidationHandler implements Validatable, Validator<Object> 
         } catch (Exception ex) {
             throw new RuntimeException("No zero arg constructor for " + validator.getName());
         }
+    }
+
+    private boolean deepValidate(boolean deepValidate, Object value) {
+        if (value instanceof Validatable) {
+            return !deepValidate || ((Validatable) value).validate();
+        }
+
+        return true;
     }
 
     @Override

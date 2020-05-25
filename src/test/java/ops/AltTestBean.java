@@ -1,10 +1,11 @@
 package ops;
 
 import grinder.ops.copy.Copyable;
+import grinder.ops.validation.Validatable;
 
 import java.util.Objects;
 
-public class AltTestBean implements Copyable {
+public class AltTestBean implements Copyable, Validatable {
     private String firstValue;
 
     public String getFirstValue() {
