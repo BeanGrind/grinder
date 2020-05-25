@@ -1,4 +1,4 @@
-package grinder.ops;
+package grinder.custom.validator;
 
 @FunctionalInterface
 public interface Validator<T> {

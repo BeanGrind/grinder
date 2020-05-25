@@ -18,6 +18,7 @@ public class ValidationTest {
         caller.setFieldTwo("fieldTwo");
         caller.setPatternField("12-345");
         caller.setPositiveNumber(100L);
+        caller.setNegativeNumber(-100L);
 
         assertTrue(caller.validate());
     }
@@ -28,6 +29,7 @@ public class ValidationTest {
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
         caller.setPositiveNumber(100L);
+        caller.setNegativeNumber(-100L);
 
         caller.setPatternField(null);
 
