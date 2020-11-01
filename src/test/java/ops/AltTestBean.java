@@ -1,12 +1,13 @@
 package ops;
 
 import grinder.ops.copy.Copyable;
+import grinder.ops.map.Mappable;
 import grinder.ops.merge.Mergeable;
 import grinder.ops.validation.Validatable;
 
 import java.util.Objects;
 
-public class AltTestBean implements Copyable, Validatable, Mergeable {
+public class AltTestBean implements Copyable, Validatable, Mergeable, Mappable {
     private String firstValue;
     private String secondValue;
 

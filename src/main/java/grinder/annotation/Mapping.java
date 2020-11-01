@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Mapping {
+    boolean deepMap() default true;
+
     String convertDirection() default ConverterDirection.BOTH;
 
     Class<? extends Converter> converter() default DefaultMapHandler.class;

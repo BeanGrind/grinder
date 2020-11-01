@@ -1,6 +1,7 @@
 package ops.map;
 
 import grinder.ops.map.Mappable;
+import ops.AltTestBean;
 import ops.TestBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,15 +18,20 @@ public class MapTest {
 
     @Test
     public void testMap_assertMapped() {
+        AltTestBean deepCopy = new AltTestBean();
+        deepCopy.setFirstValue("firstValue");
+
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
         caller.setIgnoredField("ignore");
+        caller.setDeepCopyBean(deepCopy);
 
         Map<String, Object> mapped = caller.toMap();
 
         assertEquals("fieldOne", mapped.get("fieldOne"));
         assertEquals("fieldTwo", mapped.get("fieldTwo"));
+        assertEquals("firstValue", ((Map ) mapped.get("deepCopyBean")).get("firstValue"));
         assertNull(mapped.get("ignoredField"));
     }
 
@@ -49,14 +55,27 @@ public class MapTest {
 
     @Test
     public void testMap_assertFromMap() {
+        AltTestBean deepCopy = new AltTestBean();
+        deepCopy.setFirstValue("firstValue");
+
+        AltTestBean basicCopy = new AltTestBean();
+        basicCopy.setFirstValue("first");
+
         TestBean caller = new TestBean();
         caller.setFieldOne("fieldOne");
         caller.setFieldTwo("fieldTwo");
+        caller.setDeepCopyBean(deepCopy);
+        caller.setBasicCopyBean(basicCopy);
+
+        Map<String, Object> deepMap = new HashMap<>();
+        deepMap.put("firstValue", "firstValue");
 
         Map<String, Object> map = new HashMap<>();
         map.put("fieldOne", "fieldOne");
         map.put("fieldTwo", "fieldTwo");
         map.put("ignoredField", "ignoredField");
+        map.put("deepCopyBean", deepMap);
+        map.put("basicCopyBean", basicCopy);
 
         assertEquals(Mappable.fromMap(map, TestBean.class), caller);
     }
