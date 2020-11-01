@@ -14,6 +14,15 @@ public class Fields {
         return Optional.ofNullable(field.getDeclaredAnnotation(annotationClass));
     }
 
+    public static boolean hasField(Field field, Object input) {
+        try {
+            input.getClass().getDeclaredField(field.getName());
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public static Optional<Object> getValue(Field field, Object input) {
         try {
             return Optional.ofNullable(field.get(input));
