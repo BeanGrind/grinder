@@ -86,4 +86,9 @@ public class DefaultMapHandler implements Converter<Object, Object> {
     public Object convert(Object from) {
         return from;
     }
+
+    @Override
+    public Object reverse(Object to) {
+        return to;
+    }
 }

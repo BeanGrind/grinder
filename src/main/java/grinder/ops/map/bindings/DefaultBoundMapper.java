@@ -1,11 +1,14 @@
 package grinder.ops.map.bindings;
 
 import grinder.annotation.Binding;
+import grinder.annotation.ConvertWith;
+import grinder.custom.converter.Converter;
 import grinder.util.Classes;
 import grinder.util.Fields;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Objects;
 
 public class DefaultBoundMapper implements BoundMapper {
@@ -50,11 +53,21 @@ public class DefaultBoundMapper implements BoundMapper {
                 target.setAccessible(true);
 
                 if (value != null) {
+                    value = convertedValue(field, value);
                     target.set(to, value);
                 }
             } catch (Exception ex) {
                 throw new RuntimeException("Error setting " + field.getName() + " on " + to.getClass().getName());
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object convertedValue(Field field, final Object value) {
+        return Fields.getAnnotation(field, ConvertWith.class)
+                .map(convertWith -> {
+                    Converter converter = Classes.zeroArgConstruct(convertWith.value());
+                    return converter.convert(value);
+                }).orElse(value);
     }
 }

@@ -12,4 +12,9 @@ public class AbsoluteValueConverter implements Converter<Long, Long> {
         
         return aLong < 0 ? aLong * - 1 : aLong;
     }
+
+    @Override
+    public Long reverse(Long aLong) {
+        return null;
+    }
 }
